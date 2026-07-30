@@ -1,0 +1,33 @@
+import java.util.*;
+class Solution {
+    private static int getLongestComonSubstring(String s1, String s2, int[][] dp, int row, int col){
+        int maxlen = 0;
+        for(int i=0; i<row; i++){
+            for(int j=0; j<col; j++){
+                if(s1.charAt(i) == s2.charAt(j)){
+                    dp[i+1][j+1] = dp[i][j] + 1;
+                    maxlen = Math.max(maxlen, dp[i+1][j+1]);
+                } else {
+                    dp[i+1][j+1] = 0;
+                }
+            }
+        }
+        return maxlen;
+    }
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String s1 = sc.next();
+        String s2 = sc.next();
+        int row = s1.length();
+        int col = s2.length();
+        int dp[][] = new int[row+1][col+1];
+        for(int i=0; i<=row; i++){
+            for(int j=0; j<=col; j++){
+                if((i==0 || j==0) || (i==0 && j==0)){
+                    dp[i][j] = 0;
+                }
+            }
+        }
+        System.out.println(getLongestComonSubstring(s1, s2, dp, row, col));
+    }
+}

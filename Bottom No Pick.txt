@@ -1,0 +1,40 @@
+import java.util.*;
+class Solution{
+    public static void main(String args[]){
+        Scanner sc = new Scanner(System.in);
+        int r = sc.nextInt();
+        int c = sc.nextInt();
+        int mat[][] = new int[r][c];
+        long dp[][] = new long[r+1][c];
+        for(int i=0; i<r; i++){
+            for(int j=0; j<c; j++){
+                mat[i][j] = sc.nextInt();
+                if(i == 0){
+                    dp[i][j] = mat[i][j];
+                }
+            }
+        }
+
+        for(int i=1; i<r; i++){
+            long fsMax[] = getFS(dp, i-1, c);
+            for(int j=0; j<c; j++){
+                dp[i][j] = mat[i][j] + (dp[i-1][j] == fsMax[0]?fsMax[1]:fsMax[0]);
+            }
+        }
+        System.out.println(getFS(dp, r-1, c)[0]);
+    }
+
+        private static long[] getFS(long[][] dp, int R, int C){
+            long max = Math.max(dp[R][0], dp[R][1]);
+            long smax = Math.min(dp[R][0], dp[R][1]);
+            for(int i = 2; i<C; i++){
+                if(dp[R][i] > max){
+                    smax = max;
+                    max = dp[R][i];
+                } else if(dp[R][i] > smax){
+                    smax = dp[R][i];
+                }
+            }
+            return new long[] {max, smax};
+    }
+}

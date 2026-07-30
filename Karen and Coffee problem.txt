@@ -1,0 +1,53 @@
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();
+        int k = sc.nextInt();
+        int q = sc.nextInt();
+
+        int MAX = 200000;
+
+        // Difference array
+        int[] diff = new int[MAX + 2];
+
+        // Read recipes
+        for (int i = 0; i < n; i++) {
+            int l = sc.nextInt();
+            int r = sc.nextInt();
+
+            diff[l]++;
+            if (r + 1 <= MAX) {
+                diff[r + 1]--;
+            }
+        }
+
+        // Prefix sum to find how many recipes recommend each temperature
+        int[] cnt = new int[MAX + 1];
+        cnt[1] = diff[1];
+        for (int i = 2; i <= MAX; i++) {
+            cnt[i] = cnt[i - 1] + diff[i];
+        }
+
+        // Prefix sum of admissible temperatures
+        int[] prefix = new int[MAX + 1];
+        for (int i = 1; i <= MAX; i++) {
+            prefix[i] = prefix[i - 1];
+            if (cnt[i] >= k) {
+                prefix[i]++;
+            }
+        }
+
+        // Answer each query directly
+        while (q-- > 0) {
+            int a = sc.nextInt();
+            int b = sc.nextInt();
+
+            System.out.println(prefix[b] - prefix[a - 1]);
+        }
+
+        sc.close();
+    }
+}
