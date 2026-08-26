@@ -1,0 +1,29 @@
+#include <iostream>
+#include <vector>
+#include <cmath>
+using namespace std;
+void solve(){
+	int N , M, L, R;
+    cin>>N>>M;
+    vector <int> prefixsum(N+2,0);
+    while(M--){
+    	cin>>L>>R;
+        prefixsum[L]++;
+        if (R+1 <= N){
+        	prefixsum[R+1]--;
+        }
+    }
+    int mini= 200005;
+    for (int i=1 ; i<=N; i++){
+        prefixsum[i]+=prefixsum[i-1];
+        mini=min(mini,prefixsum[i]);
+    }
+    cout<<mini<<endl;
+}
+int main() {
+    int tc =1;
+    while(tc--){
+    	solve();
+    }
+    return 0;
+}
