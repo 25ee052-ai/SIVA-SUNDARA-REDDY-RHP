@@ -1,0 +1,24 @@
+class Solution {
+
+public int maxRotateFunction(int[] nums) {
+        int sum=0;
+        long a=0;
+        long ans=0;
+        int N=nums.length;
+        for(int i=0;i<N;i++){
+            sum +=nums[i];
+           
+        }
+        for(int i=0;i<N;i++){
+            
+            a += (long)i*nums[i];
+        }
+        ans=a;
+        for(int i=N-1;i>0;i--){
+            a =a-(nums[i]*(N-1))+(sum-nums[i]);
+            ans =Math.max(ans,a);
+        }
+        return (int)ans;
+
+    }
+};
