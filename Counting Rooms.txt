@@ -1,38 +1,32 @@
-#include <iostream>
-#include <vector>
-#include <string>
-
+#include<iostream>
+#include<vector>
 using namespace std;
-void dfs(int r, int c, int i, int j, vector<string>& grid) {
-   if (i < 0 || i >= r || j < 0 || j >= c || grid[i][j] == '#') {
-        return;
-    }
-    grid[i][j] = '#';
-    dfs(r, c, i - 1, j, grid); 
-    dfs(r, c, i + 1, j, grid); 
-    dfs(r, c, i, j - 1, grid);
-    dfs(r, c, i, j + 1, grid); 
+const int diff[] = {0, 1, 0, -1, 0};
+void set(vector<vector<char>>& a, int row, int col, int R, int C){
+	a[row][col] = '#';
+	for(int i=0; i<3; i++){
+		int dr = row+diff[i], dc = col+diff[i+1];
+		if(dr>=0 && dr<R && dc>=0 && dc < C && a[dr][dc] == '.'){
+			set(a, dr, dc, R, C);
+		}
+	}
 }
-
-int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(NULL);
-    int r, c;
-    if (!(cin >> r >> c)) return 0;
-    vector<string> grid(r);
-    for (int i = 0; i < r; i++) {
-        cin >> grid[i];
-    }
-    int room = 0;
-    for (int i = 0; i < r; i++) {
-        for (int j = 0; j < c; j++) {
-            if (grid[i][j] == '.') {
-                room++;
-                dfs(r, c, i, j, grid);
-            }
-        }
-    }
-
-    cout << room << "\n";
-    return 0;
+int main(){
+	int R, C; cin >> R >> C;
+	vector<vector<char>> a(R, vector<char>(C, 0));
+	for(int row=0; row<R; row++){
+		for(int col=0; col<C; col++){
+			cin >> a[row][col];
+		}
+	}
+	int count = 0;
+	for(int row=0; row<R; row++){
+		for(int col=0; col<C; col++){
+			if(a[row][col] == '.'){
+				count++;
+				set(a, row, col, R, C);
+			}
+		}
+	}
+	cout << count << endl;
 }
